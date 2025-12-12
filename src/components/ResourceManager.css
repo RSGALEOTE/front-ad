@@ -1,0 +1,39 @@
+.resource-manager {
+  width: 100%;
+}
+
+.resource-manager form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.resource-manager input[type="text"],
+.resource-manager input[type="number"],
+.resource-manager input[type="email"] {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6edf3;
+  min-width: 160px;
+}
+
+.resource-manager table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.resource-manager th,
+.resource-manager td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f1f5f9;
+  text-align: left;
+}
+.resource-manager tbody tr:hover {
+  background: #fbfcfe;
+}
+.resource-manager .actions .btn {
+  margin-right: 6px;
+}
