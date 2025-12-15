@@ -76,6 +76,14 @@ export default function ResourceManager({ resource, fields }) {
 
   async function handleCreate(e) {
     e.preventDefault()
+    
+    // Validar que todos los campos requeridos estén llenos
+    const emptyFields = fields.filter(f => !newData[f.name] || newData[f.name].trim() === '')
+    if (emptyFields.length > 0) {
+      alert(`Por favor completa los campos: ${emptyFields.map(f => f.label).join(', ')}`)
+      return
+    }
+    
     try {
       const headers = {
         'Content-Type': 'application/json',
@@ -92,8 +100,9 @@ export default function ResourceManager({ resource, fields }) {
         body: JSON.stringify(newData),
       })
       if (!res.ok) {
-        const txt = await res.text()
-        throw new Error(txt || 'Error al crear')
+        const errorData = await res.json().catch(() => null)
+        const errorMsg = errorData?.message || errorData?.error || 'Error al crear'
+        throw new Error(errorMsg)
       }
       setNewData({})
       await fetchItems()
@@ -171,6 +180,7 @@ export default function ResourceManager({ resource, fields }) {
               placeholder={f.label}
               value={newData[f.name] || ''}
               onChange={(e) => handleChange(e, f.name)}
+              required
               style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #e6edf3' }}
             />
           ))}
