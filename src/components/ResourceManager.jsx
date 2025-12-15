@@ -78,7 +78,7 @@ export default function ResourceManager({ resource, fields }) {
     e.preventDefault()
     
     // Validar que todos los campos requeridos estén llenos
-    const emptyFields = fields.filter(f => !newData[f.name] || newData[f.name].trim() === '')
+    const emptyFields = fields.filter(f => !newData[f.name] || String(newData[f.name]).trim() === '')
     if (emptyFields.length > 0) {
       alert(`Por favor completa los campos: ${emptyFields.map(f => f.label).join(', ')}`)
       return
@@ -101,6 +101,13 @@ export default function ResourceManager({ resource, fields }) {
       })
       if (!res.ok) {
         const errorData = await res.json().catch(() => null)
+        if (res.status === 422) {
+          const errors = errorData?.errors || {}
+          const errorMessages = Object.entries(errors).map(([field, msgs]) => {
+            return `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`
+          }).join('\n')
+          throw new Error(errorMessages || 'Error de validación: verifica que todos los campos estén completos')
+        }
         const errorMsg = errorData?.message || errorData?.error || 'Error al crear'
         throw new Error(errorMsg)
       }
@@ -134,6 +141,13 @@ export default function ResourceManager({ resource, fields }) {
   }
 
   async function handleUpdate(id) {
+    // Validar que todos los campos requeridos estén llenos
+    const emptyFields = fields.filter(f => !editData[f.name] || String(editData[f.name]).trim() === '')
+    if (emptyFields.length > 0) {
+      alert(`Por favor completa los campos: ${emptyFields.map(f => f.label).join(', ')}`)
+      return
+    }
+    
     try {
       const headers = {
         'Content-Type': 'application/json',
@@ -154,8 +168,16 @@ export default function ResourceManager({ resource, fields }) {
         throw new Error('No autorizado')
       }
       if (!res.ok) {
-        const txt = await res.text()
-        throw new Error(txt || 'Error al actualizar')
+        const errorData = await res.json().catch(() => null)
+        if (res.status === 422) {
+          const errors = errorData?.errors || {}
+          const errorMessages = Object.entries(errors).map(([field, msgs]) => {
+            return `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`
+          }).join('\n')
+          throw new Error(errorMessages || 'Error de validación: verifica que todos los campos estén completos')
+        }
+        const errorMsg = errorData?.message || errorData?.error || 'Error al actualizar'
+        throw new Error(errorMsg)
       }
       setEditingId(null)
       setEditData({})
