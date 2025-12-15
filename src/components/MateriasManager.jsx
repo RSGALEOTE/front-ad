@@ -9,7 +9,7 @@ export default function MateriasManager() {
       <ResourceManager
         resource="materias"
         fields={[
-          { name: 'nombre', label: 'Nombre' },
+          { name: 'titulo', label: 'Título' },
           { name: 'descripcion', label: 'Descripción' },
         ]}
       />

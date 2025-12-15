@@ -195,18 +195,23 @@ export default function ResourceManager({ resource, fields }) {
       </div>
 
       <div style={{ marginTop: 10 }}>
-        <form onSubmit={handleCreate} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <form onSubmit={handleCreate} style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'flex-end' }}>
           {fields.map((f) => (
-            <input
-              key={f.name}
-              placeholder={f.label}
-              value={newData[f.name] || ''}
-              onChange={(e) => handleChange(e, f.name)}
-              required
-              style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #e6edf3' }}
-            />
+            <div key={f.name} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <label htmlFor={`new-${f.name}`} style={{ fontSize: 13, fontWeight: 500, color: '#374151' }}>
+                {f.label}
+              </label>
+              <input
+                id={`new-${f.name}`}
+                placeholder={f.label}
+                value={newData[f.name] || ''}
+                onChange={(e) => handleChange(e, f.name)}
+                required
+                style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #e6edf3', minWidth: 150 }}
+              />
+            </div>
           ))}
-          <button className="btn primary" type="submit">Crear</button>
+          <button className="btn primary" type="submit" style={{ marginBottom: 0 }}>Crear</button>
         </form>
       </div>
 
