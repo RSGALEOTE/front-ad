@@ -15,7 +15,7 @@ export default function ResourceManager({ resource, fields }) {
   const [editData, setEditData] = useState({})
   const auth = useAuth()
 
-  const baseUrl = 'http://127.0.0.1:8000/api/' + resource
+  const baseUrl = `${import.meta.env.VITE_API_URL}/api/${resource}`
 
   useEffect(() => {
     fetchItems()

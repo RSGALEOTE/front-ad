@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
         return null
       }
       
-      const res = await fetch('http://127.0.0.1:8000/api/me', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
   }, [token])
 
   async function login(email, password) {
-    const res = await fetch('http://127.0.0.1:8000/api/login', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
   async function logout() {
     try {
       if (token) {
-        await fetch('http://127.0.0.1:8000/api/logout', {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
